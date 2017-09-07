@@ -14,9 +14,10 @@ public class Startup {
 
         Employee employee = new Employee("Peter","Piper","333-33-3333");
         HrPerson hrPerson = new HrPerson(employee);
+        Company company = new Company(hrPerson);
         
-        hrPerson.doFirstTimeOrientation(employee);
-        hrPerson.getReportService().outputReport();
+        company.hireEmployee(employee);
+        
     }
     
     
