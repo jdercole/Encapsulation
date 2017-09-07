@@ -96,6 +96,8 @@ public class Employee {
     public final void setFirstName(String firstName) {
        if ((firstName.length() >= 2) && (firstName.length() <= 30) && (firstName.contains("/^[A-z]+$/"))) {
             this.firstName = firstName;
+       } else {
+           throw new IllegalArgumentException("First name in invalid format!");
        }
     }
 
@@ -106,7 +108,9 @@ public class Employee {
     public final void setLastName(String lastName) {
        if ((lastName.length() >= 2) && (lastName.length() <= 30) && (lastName.contains("/^[A-z]+$/"))) {
             this.lastName = lastName;
-        }
+        } else {
+           throw new IllegalArgumentException("Last name in invalid format!");
+       }
     }
 
     public final String getSsn() {
@@ -116,7 +120,9 @@ public class Employee {
     public final void setSsn(String ssn) {
         if(isSsnValid(ssn)) {
             this.ssn = ssn;
-        }
+        } else {
+           throw new IllegalArgumentException("SSN in invalid format!");
+       }
     }
     
     public boolean isSsnValid(String ssn){
@@ -170,7 +176,7 @@ public class Employee {
     
     public final void setCubeId(String cubeId) {
         if(cubeId == null || cubeId.isEmpty()) {
-            System.out.println("Cube ID required!");
+            throw new IllegalArgumentException("CubeID in invalid format!");
         }
         this.cubeId = cubeId;
     }
@@ -181,7 +187,7 @@ public class Employee {
 
     public final void setOrientationDate(Date orientationDate) {
         if(orientationDate == null) {
-            System.out.println("Orientation date required!");
+            throw new IllegalArgumentException("Orientation date required!");
         }
         this.orientationDate = orientationDate;
     }}
