@@ -2,6 +2,8 @@ package lab3;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * In this lab focus on CLASS Encapsulation and  the Single Responsibility 
@@ -74,12 +76,16 @@ public class Employee {
         are called. Order isn't always an issue, but here it obviously is, which
         may be an important requirement.
     */
-    public void doFirstTimeOrientation(String cubeId) {
+    public void doFirstTimeOrientation(Employee e) throws NullPointerException {
         orientationDate = new Date();
         meetWithHrForBenefitAndSalryInfo();
         meetDepartmentStaff();
         reviewDeptPolicies();
-        moveIntoCubicle(cubeId);
+        try {
+        moveIntoCubicle(e.getCubeId());
+        } catch (NullPointerException npe) {
+            throw new NullPointerException(npe.getMessage());
+        }
         output.outputHrInfomation();
     }
 
@@ -134,22 +140,26 @@ public class Employee {
     // allowed through validation. Throwing ane exception is the best
     // practice when validation fails. Don't do a System.out.println()
     // to display an error message -- not the job of this class!
-    public final void setFirstName(String firstName) {
-        if(firstName == null || firstName.isEmpty()) {
-            throw new IllegalArgumentException("first name is required!");
+    public final void setFirstName(String firstName) throws IllegalArgumentException {
+        if((firstName.length() >= 2) && (firstName.length() <= 30) && (firstName.contains("/^[A-z]+$/"))) {
+            this.firstName = firstName;
+        } else {
+            throw new IllegalArgumentException("First name is in an invalid format!");
         }
-        this.firstName = firstName;
+        
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public final void setLastName(String lastName) {
-        if(lastName == null || lastName.isEmpty()) {
-            throw new IllegalArgumentException("Last name is required!");
+    public final void setLastName(String lastName) throws IllegalArgumentException {
+        if ((lastName.length() >= 2) && (lastName.length() <= 30) && (lastName.contains("/^[A-z]+$/"))) {
+            this.lastName = lastName;
+        } else {
+            throw new IllegalArgumentException("Last name is in an invalid format!");
         }
-        this.lastName = lastName;
+        
     }
 
     public String getSsn() {
@@ -157,11 +167,23 @@ public class Employee {
     }
 
     public final void setSsn(String ssn) {
-        if(ssn == null || ssn.length() < 9 || ssn.length() > 11) {
-            throw new IllegalArgumentException("SSN is required and must be "
-                    + "between 9 and 11 characters (if hyphens are used)");
+        if(isSsnValid(ssn)) {
+            this.ssn = ssn;
+        } else {
+           throw new IllegalArgumentException("SSN in invalid format!");
+       }
+    }
+    
+     public boolean isSsnValid(String ssn){
+        boolean isValid = false;
+        String expression = "^\\d{3}[- ]?\\d{2}[- ]?\\d{4}$";
+        CharSequence inputStr = ssn;
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(inputStr);
+        if(matcher.matches()){
+            isValid = true;
         }
-        this.ssn = ssn;
+        return isValid;
     }
 
     public boolean isMetWithHr() {
