@@ -7,13 +7,22 @@ package lab4;
  */
 public class Company {
     private HrPerson hrPerson;
-    private Employee employee;
     
-    public Company(HrPerson hrPerson) {
+    public Company() {
+        hrPerson = new HrPerson();
+    }
+    
+    public void hireEmployee(String firstName, String lastName, String ssn) {
+        hrPerson.hireEmployee(firstName, lastName, ssn);
+    }
+
+    public final HrPerson getHrPerson() {
+        return hrPerson;
+    }
+
+    public final void setHrPerson(HrPerson hrPerson) {
         this.hrPerson = hrPerson;
     }
     
-    public void hireEmployee(Employee e) {
-        hrPerson.doFirstTimeOrientation(e);
-    }
+    
 }

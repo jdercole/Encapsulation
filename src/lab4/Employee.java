@@ -1,7 +1,7 @@
 package lab4;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * As with the previous lab you should focus on CLASS Encapsulation and the 
@@ -41,8 +41,7 @@ public class Employee {
     private String lastName;
     private String ssn;
     private String cubeId;
-    private Date orientationDate;
-    private HrPerson hrPerson;
+    private LocalDate orientationDate;
     /*
         Notice we force certain mandatory properties by using a custom
         constructor. But we use the setter method to peform validation.
@@ -100,21 +99,13 @@ public class Employee {
         this.ssn = ssn;
     }
 
-    public final HrPerson getHrPerson() {
-        return hrPerson;
-    }
-
-    public final void setHrPerson(HrPerson hrPerson) {
-        this.hrPerson = hrPerson;
-    }
-
-    public final Date getOrientationDate() {
+    public final LocalDate getOrientationDate() {
         return orientationDate;
     }
 
-    public final void setOrientationDate(Date orientationDate) {
+     public final void setOrientationDate(LocalDate orientationDate) {
         if(orientationDate == null) {
-            System.out.println("Orientation date required!");
+            throw new IllegalArgumentException("Orientation date is required!");
         }
         this.orientationDate = orientationDate;
     }

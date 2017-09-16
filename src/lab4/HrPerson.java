@@ -1,7 +1,10 @@
 
 package lab4;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,8 +18,7 @@ public class HrPerson {
     private final String REQUIRED_MSG = " is mandatory ";
     private final String CRLF = "\n"; // carriage return line feed
     
-    private Employee employee;
-    private Company company;
+    private List<Employee> employees;
     private boolean metWithHr;
     private boolean metDeptStaff;
     private boolean reviewedDeptPolicies;
@@ -24,10 +26,12 @@ public class HrPerson {
     private EmployeeReportService reportService;
     private DateUtilities dateService;
     private String cubeId;
+    private LocalDate orientationDate;
    
     
-    public HrPerson(Employee e) {
-        this.employee = e;
+    public HrPerson() {
+        employees = new ArrayList();
+        reportService = new EmployeeReportService();
     }
         /*
         This method is public because it must be available to other classes in
@@ -35,11 +39,18 @@ public class HrPerson {
         are called. Order isn't always an issue, but here it obviously is, which
         may be an important requirement.
     */
-    public void doFirstTimeOrientation(Employee e) {
-        meetWithHrForBenefitAndSalryInfo();
-        meetDepartmentStaff();
-        reviewDeptPolicies();
-        moveIntoCubicle();
+    public void hireEmployee(String firstName, String lastName, String ssn) {
+        Employee e = new Employee(firstName, lastName, ssn);
+        employees.add(e);
+        orientEmployee(e);
+    }
+    
+    private void orientEmployee(Employee e) {
+        e.setOrientationDate(LocalDate.now());
+        meetWithHrForBenefitAndSalryInfo(e);
+        meetDepartmentStaff(e);
+        reviewDeptPolicies(e);
+        moveIntoCubicle(e);
     }
     
         // The following methods may be public or private, depending on whether
@@ -50,10 +61,10 @@ public class HrPerson {
     // method should not be public. It should only be available to this class
     // and should only be called as part of the larger task of:
     // doFirtTimeOrientation()
-    private final void meetWithHrForBenefitAndSalryInfo() {
+    private final void meetWithHrForBenefitAndSalryInfo(Employee e) {
         metWithHr = true;
-        reportService.addData(employee.getFirstName() + " " + employee.getLastName() + " met with Hr on "
-            + dateService.getFormattedDate(employee.getOrientationDate()) + CRLF);
+        reportService.addData(e.getFirstName() + " " + e.getLastName() + " met with Hr on "
+            + dateService.getFormattedDate(e.getOrientationDate()) + CRLF);
     }
     
      // Assume this must be performed first, and assume that an employee
@@ -61,19 +72,19 @@ public class HrPerson {
     // method should not be public. It should only be available to this class
     // and should only be called as part of the larger task of:
     // doFirtTimeOrientation()
-    private final void meetDepartmentStaff() {
+    private final void meetDepartmentStaff(Employee e) {
         metDeptStaff = true;
-        reportService.addData(employee.getFirstName() + " " + employee.getLastName() + " met with Dept. Staff on "
-            + dateService.getFormattedDate(employee.getOrientationDate()) + CRLF);
+        reportService.addData(e.getFirstName() + " " + e.getLastName() + " met with Dept. Staff on "
+            + dateService.getFormattedDate(e.getOrientationDate()) + CRLF);
     }
 
     // Assume this must be performed third. And assume that because department
     // policies may change that this method may need to be called 
     // independently from other classes.
-    public final void reviewDeptPolicies() {
+    public final void reviewDeptPolicies(Employee e) {
         reviewedDeptPolicies = true;
-        reportService.addData(employee.getFirstName() + " " + employee.getLastName() + " reviewed Dept policies on "
-            + dateService.getFormattedDate(employee.getOrientationDate()) + CRLF);
+        reportService.addData(e.getFirstName() + " " + e.getLastName() + " reviewed Dept policies on "
+            + dateService.getFormattedDate(e.getOrientationDate()) + CRLF);
     }
     
     
@@ -114,7 +125,7 @@ public class HrPerson {
         return cubeId;
     }
 
-    public final void setCubeId(String cubeId) {
+    public final void setCubeId(String cubeId) throws IllegalArgumentException {
         if(cubeId == null || cubeId.isEmpty()) {
             throw new IllegalArgumentException("cube id" + REQUIRED_MSG);
         }
@@ -124,10 +135,10 @@ public class HrPerson {
         // Assume this must be performed 4th. And assume that because employees
     // sometimes change office locations that this method may need to be called 
     // independently from other classes.
-    public final void moveIntoCubicle() {
+    public final void moveIntoCubicle(Employee e) {
         this.movedIn = true;
-        reportService.addData(employee.getFirstName() + " " + employee.getLastName() + " moved into cubicle "
-                + getCubeId() + " on " + dateService.getFormattedDate(employee.getOrientationDate()) + CRLF);
+        reportService.addData(e.getFirstName() + " " + e.getLastName() + " moved into cubicle "
+                + getCubeId() + " on " + dateService.getFormattedDate(e.getOrientationDate()) + CRLF);
     }
     
     public final EmployeeReportService getReportService() {
@@ -137,4 +148,26 @@ public class HrPerson {
     public final void setReportService(EmployeeReportService reportService) {
         this.reportService = reportService;
     }
+
+    public final DateUtilities getDateService() {
+        return dateService;
+    }
+
+    public final void setDateService(DateUtilities dateService) {
+        this.dateService = dateService;
+    }
+    
+    private String getFormattedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+        return sdf.format(orientationDate);
+    }
+
+//    public final void setOrientationDate(LocalDate orientationDate) {
+//        if(orientationDate == null) {
+//            throw new IllegalArgumentException("Orientation date is required!");
+//        }
+//        this.orientationDate = orientationDate;
+//    }
+    
+    
 }
