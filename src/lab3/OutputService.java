@@ -1,5 +1,7 @@
 package lab3;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jlombardo
@@ -7,7 +9,7 @@ package lab3;
 public class OutputService {
     
     public final void simpleOutput(String msg) {
-        System.out.println(msg);
+        JOptionPane.showMessageDialog(null, msg);
     }
     
     public final void completeOutput(String msg) {

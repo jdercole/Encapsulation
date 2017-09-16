@@ -38,11 +38,15 @@ public class Employee {
         setSsn(ssn);
     }
     
-    public void receiveOrientation() {
+    public void receiveOrientation(Employee e) throws NullPointerException {
         meetWithHrForBenefitAndSalaryInfo();
         meetDepartmentStaff();
         reviewDeptPolicies();
-        moveIntoCubicle(cubeId);
+        try {
+            moveIntoCubicle(e.getCubeId());
+        } catch (NullPointerException npe) {
+            throw new NullPointerException(npe.getMessage());
+        }
     }
 
     // Assume this must be performed first, and assume that an employee
