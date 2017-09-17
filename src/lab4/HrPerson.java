@@ -32,6 +32,7 @@ public class HrPerson {
     public HrPerson() {
         employees = new ArrayList();
         reportService = new EmployeeReportService();
+        dateService = new DateUtilities();
     }
         /*
         This method is public because it must be available to other classes in
@@ -157,11 +158,6 @@ public class HrPerson {
         this.dateService = dateService;
     }
     
-    private String getFormattedDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        return sdf.format(orientationDate);
-    }
-
 //    public final void setOrientationDate(LocalDate orientationDate) {
 //        if(orientationDate == null) {
 //            throw new IllegalArgumentException("Orientation date is required!");
